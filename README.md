@@ -1,3 +1,5 @@
 # BackendTeamF
 
-##test
+# database config
+ - sequelize-cli db:create
+ 
