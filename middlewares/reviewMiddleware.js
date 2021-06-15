@@ -8,7 +8,6 @@ reviewMiddleware.validation = async (req, res, next) => {
     const schema = joi
       .object({
         authorization: joi.string().required(),
-        review: joi.string().required(),
         rating: joi.string().required(),
         user_id: joi.string().required(),
         movie_id: joi.string().required(),
