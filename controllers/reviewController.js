@@ -7,9 +7,11 @@ reviewController.create = async (req, res) => {
     let message = "SUCCESS";
     let data = {};
 
-    const { data: createReview, error } = await eventService.create(req.body);
-
-    res.status(200).send({
+    const { data: createReview, error } = await reviewService.create(req.body);
+    if (error !== null) {
+      (status = 500), (message = error);
+    }
+    res.status(status).send({
       status,
       message,
       data: createReview || data,

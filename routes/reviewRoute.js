@@ -3,7 +3,7 @@ const reviewMiddleware = require("../middlewares/reviewMiddleware");
 const reviewController = require("../controllers/reviewController");
 
 router.post(
-  "/review/:moview_id",
+  "/api/milantv/review/:movie_id",
   reviewMiddleware.validation,
   reviewController.create
 );
