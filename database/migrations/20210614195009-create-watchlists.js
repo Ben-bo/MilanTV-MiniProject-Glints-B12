@@ -11,7 +11,7 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {         // WorkingDays hasMany Users n:n
+        references: {        
           model: 'Users',
           key: 'id'
         }
@@ -19,7 +19,7 @@ module.exports = {
       movie_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {         // WorkingDays hasMany Users n:n
+        references: {        
           model: 'Movies',
           key: 'id'
         }

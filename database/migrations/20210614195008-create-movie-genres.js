@@ -11,7 +11,7 @@ module.exports = {
       movie_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {         // WorkingDays hasMany Users n:n
+        references: {         
           model: 'Movies',
           key: 'id'
         }
@@ -19,7 +19,7 @@ module.exports = {
       genre_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {         // WorkingDays hasMany Users n:n
+        references: {         
           model: 'Genres',
           key: 'id'
         }
