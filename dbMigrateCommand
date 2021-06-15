@@ -1,0 +1,8 @@
+sequelize-cli  model:generate --name Users --attributes full_name:string,email:string,password:string,photo_path:string,role:integer   &&
+sequelize-cli model:generate --name Genres --attributes name:string &&
+sequelize-cli model:generate --name Movies --attributes title:string,synopsis:string,release_date:date,featured_song:string,budget:integer,language:string,duration:integer,poster_path:string,trailer_path:string &&
+sequelize-cli model:generate --name Movie_genres --attributes movie_id:integer,genre_id:integer &&
+sequelize-cli model:generate --name Reviews --attributes review:string,rating:integer,user_id:integer,movie_id:integer &&
+sequelize-cli model:generate --name Watchlists --attributes user_id:integer,movie_id:integer &&
+sequelize-cli model:generate --name Movie_actors --attributes movie_id:integer,character_name:string,real_name:string,photo_path:string &&
+sequelize-cli model:generate --name Movie_directors --attributes movie_id:integer,director_name:string 

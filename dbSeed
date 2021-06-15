@@ -1,0 +1,7 @@
+sequelize seed:generate --name seed-user &&
+sequelize seed:generate --name seed-genre &&
+sequelize seed:generate --name seed-movie &&
+sequelize seed:generate --name seed-movie_genre &&
+sequelize seed:generate --name seed-review &&
+sequelize seed:generate --name seed-movie_actor &&
+sequelize seed:generate --name seed-movie_director 
