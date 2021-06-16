@@ -2,8 +2,11 @@ const movieService = require('../services/movieService')
 
 const movieController = {
     getMovie: async (req, res) => {
+        const page = Number.parseInt(req.query.page)
+        const size = Number.parseInt(req.query.size)
+        const genreId = req.query.genre
         try {
-            const result = await movieService.getAll()
+            const result = await movieService.getAll(page, size, genreId)
             // console.log(result)
             res.send({
                 status: 200,
@@ -15,6 +18,60 @@ const movieController = {
             res.send({
                 status: 500,
                 message: err,
+                data: []
+            })
+        }
+    },
+    showMovie: async (req, res) => {
+        try {
+            const result = await movieService.show(req.params.id)
+            res.send({
+                status: 200,
+                message: 'success',
+                data: result
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({
+                status: 500,
+                message: err,
+                data: []
+            })
+        }
+    },
+    getAllMovieReview: async (req, res) => {
+        const page = Number.parseInt(req.query.page)
+        const size = Number.parseInt(req.query.size)
+
+        try {
+            const result = await movieService.getAllReview(req.params.id, page, size)
+            res.send({
+                status: 200,
+                message: 'success',
+                data: result
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({
+                status: 500,
+                message: "invalid input",
+                data: []
+            })
+        }
+    },
+    searchMovie: async (req, res) =>{
+        try {
+            const result = await movieService.searchMovie(req.query.keyword)
+            res.send({
+                status: 200,
+                message: 'success',
+                data: result
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({
+                status: 500,
+                message: "invalid input",
                 data: []
             })
         }

@@ -9,7 +9,6 @@ module.exports = (sequelize, DataTypes) => {
       });
       Reviews.belongsTo(models.Movies, {
         foreignKey: "movie_id",
-        targetKey: "id",
       });
     }
   }
