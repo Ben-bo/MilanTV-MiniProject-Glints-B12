@@ -1,13 +1,56 @@
 const {
     Movies,
     Movie_genres,
-    Movie_actors
+    Movie_actors,
+    Genres,
+    Reviews,
+    Users
 } = require('../database/models')
 
 const movieService = {
     getAll: async () => {
         const res = await Movies.findAll()
         return res
+    },
+    show: async (id) => {
+        const res = await Movies.findAll({
+            where: {
+                id
+            },
+            include: [{
+                    model: Movie_genres,
+                    attributes: ['id'],
+                    include: {
+                        model: Genres,
+                        attributes: ['name']
+                    }
+                },
+                {
+                    model: Movie_actors
+                }
+            ]
+        })
+        return res
+    },
+    getAllReview: async (id, page, size) => {
+        const res = await Reviews.findAndCountAll({
+            limit: size,
+            offset: (page - 1) * size,
+            where: {
+                movie_id: id
+            },
+            include:[{
+                model: Users,
+                attributes:['full_name', 'photo_path']
+            }]
+        })
+        const respon = {
+            totalItems: res.count,
+            ...res,
+            totalPages: Math.round(res.count / size),
+            currentPage: page
+        }
+        return respon
     },
     create: async (movieData) => {
         let genreMovie = JSON.parse(movieData.genre)
@@ -52,7 +95,7 @@ const movieService = {
         })
         const delActor = await Movie_actors.destroy({
             where: {
-                movie_id:id
+                movie_id: id
             }
         })
         const res = await Movies.destroy({

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Genres extends Model {
     static associate(models) {
       this.hasMany(models.Movie_genres, {
-        foreignKey: "id",
+        foreignKey: "genre_id",
       });
     }
   }

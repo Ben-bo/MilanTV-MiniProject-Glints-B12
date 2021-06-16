@@ -8,7 +8,10 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       this.hasMany(models.Movie_genres, {
-        foreignKey: "id",
+        foreignKey: "movie_id",
+      });
+      this.hasMany(models.Movie_actors, {
+        foreignKey: "movie_id",
       });
 
       this.hasMany(models.Watchlists, {
