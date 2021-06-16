@@ -6,6 +6,7 @@ const authorizationMiddleware = require("../middlewares/authorizationMiddleware"
 
 // movie crud
 movieRouter.get('/', movieController.getMovie)
+movieRouter.get('/search', movieController.searchMovie)
 movieRouter.post('/', authorizationMiddleware.adminAuthorization, movieController.createMovie)
 movieRouter.get('/:id', movieController.showMovie)
 movieRouter.put('/:id', authorizationMiddleware.adminAuthorization, movieController.updateMovie)

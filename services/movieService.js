@@ -10,6 +10,9 @@ const {
 } = require('../database/models')
 const movie_directors = require('../database/models/movie_directors')
 
+const Op = require('Sequelize').Op
+
+
 const movieService = {
     getAll: async (page, size, genreId) => {
         if (genreId == 'all') {
@@ -86,16 +89,26 @@ const movieService = {
         respon.dataValues["avg_rating"] = avgRating[0]
         return respon
     },
-    avgReviewRating: async (id) => {
-        const avgRating = await Reviews.findAll({
-            attributes: [
-                'movie_id',
-                [sequelize.fn('AVG', sequelize.col('rating')), 'avg_rating'],
-            ],
-            raw: true,
-            group: ['movie_id']
+    // avgReviewRating: async (id) => {
+    //     const avgRating = await Reviews.findAll({
+    //         attributes: [
+    //             'movie_id',
+    //             [sequelize.fn('AVG', sequelize.col('rating')), 'avg_rating'],
+    //         ],
+    //         raw: true,
+    //         group: ['movie_id']
+    //     })
+    //     return avgRating[0]
+    // },
+    searchMovie: async (keyword) => {
+        const res = await Movies.findAll({
+            where: {
+                title: {
+                    [Op.iLike]: '%' + keyword + '%'
+                }
+            }
         })
-        return avgRating[0]
+        return res
     },
     getAllReview: async (id, page, size) => {
         const res = await Reviews.findAndCountAll({

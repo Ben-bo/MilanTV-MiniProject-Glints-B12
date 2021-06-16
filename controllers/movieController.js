@@ -59,6 +59,23 @@ const movieController = {
             })
         }
     },
+    searchMovie: async (req, res) =>{
+        try {
+            const result = await movieService.searchMovie(req.query.keyword)
+            res.send({
+                status: 200,
+                message: 'success',
+                data: result
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({
+                status: 500,
+                message: "invalid input",
+                data: []
+            })
+        }
+    },
     createMovie: async (req, res) => {
         const movieData = req.body
         try {
