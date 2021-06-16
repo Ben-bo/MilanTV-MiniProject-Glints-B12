@@ -4,8 +4,8 @@ const cors = require("cors");
 const logger = require("morgan");
 const app = express();
 
-const movieRoute = require('./routes/movieRoute')
-
+const movieRoute = require('./routes/movieRoute');
+const genreRoute = require('./routes/genreRoute');
 const authenticationRoutes = require("./routes/authenticationRoute");
 const userRoutes = require("./routes/userRoute");
 const adminRoutes = require("./routes/adminRoute");
@@ -20,7 +20,8 @@ app.use(
   })
 );
 
-app.use(movieRoute)
+app.use("/api/milantv/movies", movieRoute);
+app.use("/api/milantv/genres", genreRoute);
 app.use("/api/milantv/review", reviewRoute);
 app.use("/api/milantv", authenticationRoutes);
 app.use("/api/milantv/user", userRoutes);

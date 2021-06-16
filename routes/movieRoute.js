@@ -1,27 +1,19 @@
 const movieRouter = require('express').Router()
 const movieActorController = require('../controllers/movieActorController')
 const movieController = require('../controllers/movieController')
-const genreController = require('../controllers/genreController')
-const adminAuthMiddleware = require('../middlewares/adminAuthMiddleware')
+const authorizationMiddleware = require("../middlewares/authorizationMiddleware");
 
-const APP_URL = '/api/milantv'
 
 // movie crud
-movieRouter.get(APP_URL + '/movies', movieController.getMovie)
-movieRouter.post(APP_URL + '/movies', adminAuthMiddleware, movieController.createMovie)
-movieRouter.put(APP_URL + '/movies/:id', adminAuthMiddleware, movieController.updateMovie)
-movieRouter.delete(APP_URL + '/movies/:id', adminAuthMiddleware, movieController.deleteMovie)
+movieRouter.get('/', movieController.getMovie)
+movieRouter.post('/', authorizationMiddleware.adminAuthorization, movieController.createMovie)
+movieRouter.put('/:id', authorizationMiddleware.adminAuthorization, movieController.updateMovie)
+movieRouter.delete('/:id', authorizationMiddleware.adminAuthorization, movieController.deleteMovie)
 
 
 // movie actor cud
-movieRouter.post(APP_URL + '/movies/:movId/actors', adminAuthMiddleware, movieActorController.createActor)
-movieRouter.put(APP_URL + '/movies/:movId/actors/:actId', adminAuthMiddleware, movieActorController.updateActor)
-movieRouter.delete(APP_URL + '/movies/:movId/actors/:actId', adminAuthMiddleware, movieActorController.deleteActor)
-
-// genre crud
-movieRouter.get(APP_URL + '/genres', genreController.getAllGenre)
-movieRouter.post(APP_URL + '/genres/:id',adminAuthMiddleware, genreController.createGenre)
-movieRouter.put(APP_URL + '/genres/:id',adminAuthMiddleware, genreController.updateGenre)
-movieRouter.delete(APP_URL + '/genres/:id',adminAuthMiddleware, genreController.deleteGenre)
+movieRouter.post('/:movId/actors', authorizationMiddleware.adminAuthorization, movieActorController.createActor)
+movieRouter.put('/:movId/actors/:actId', authorizationMiddleware.adminAuthorization, movieActorController.updateActor)
+movieRouter.delete('/:movId/actors/:actId', authorizationMiddleware.adminAuthorization, movieActorController.deleteActor)
 
 module.exports = movieRouter
