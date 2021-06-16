@@ -16,15 +16,15 @@ reviewMiddleware.validation = async (req, res, next) => {
       })
       .options({ abortEarly: false });
     const validateAuth = await schemaAuth.validate({ authorization: token });
-    const valtdate = await schema.validate(req.body);
+    const validate = await schema.validate({ rating: req.body.rating });
     if (validateAuth.error) {
       res.send({
         status: 500,
         message: "missing token",
-        data: validate.error.details,
+        data: validateAuth.error.details,
       });
     }
-    if (valtdate.error) {
+    if (validate.error) {
       res.send({
         status: 500,
         message: "rating cannot be empty",

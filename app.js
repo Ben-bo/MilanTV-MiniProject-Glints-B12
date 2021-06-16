@@ -7,7 +7,6 @@ const app = express();
 
 const reviewRoute = require("./routes/reviewRoute");
 
-app.use(reviewRoute);
 app.use(cors());
 app.use(logger("dev"));
 app.use(bodyParser.json());
@@ -16,8 +15,8 @@ app.use(
     extended: false,
   })
 );
-
-app.get("/tesconnect", (req, res) =>
+app.use("/api/milantv/review", reviewRoute);
+app.get("/", (req, res) =>
   res.status(200).send({
     message: "backend team f connected with u",
   })
