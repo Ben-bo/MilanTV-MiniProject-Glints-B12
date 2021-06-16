@@ -2,6 +2,7 @@ const { Reviews: reviewsModel } = require("../database/models");
 const reviewService = {};
 reviewService.create = async (payload) => {
   try {
+    console.log(payload);
     let error = null;
     let result = {};
     const dataReview = {

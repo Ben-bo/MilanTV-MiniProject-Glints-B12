@@ -5,25 +5,36 @@ const reviewMiddleware = {};
 reviewMiddleware.validation = async (req, res, next) => {
   try {
     const token = req.headers.authorization;
-    const schema = joi
+    const schemaAuth = joi
       .object({
         authorization: joi.string().required(),
-        rating: joi.string().required(),
-        user_id: joi.string().required(),
-        movie_id: joi.string().required(),
       })
       .options({ abortEarly: false });
-    const validate = await schema.validate({ authorization: token });
-    if (validate.error) {
+    const schema = joi
+      .object({
+        rating: joi.number().required(),
+      })
+      .options({ abortEarly: false });
+    const validateAuth = await schemaAuth.validate({ authorization: token });
+    const valtdate = await schema.validate(req.body);
+    if (validateAuth.error) {
       res.send({
         status: 500,
         message: "missing token",
         data: validate.error.details,
       });
     }
+    if (valtdate.error) {
+      res.send({
+        status: 500,
+        message: "rating cannot be empty",
+        data: validate.error.details,
+      });
+    }
+
     const decodedToken = await jwt.verify(token, "secret_key");
-    req.body.decodedToken = decodedToken;
     const idMovie = req.params.movie_id;
+    req.body.decodedToken = decodedToken;
     req.body.idMovie = idMovie;
 
     next();
