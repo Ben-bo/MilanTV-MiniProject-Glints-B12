@@ -1,6 +1,5 @@
 require("dotenv").config();
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const logger = require("morgan");
 const app = express();
@@ -10,16 +9,9 @@ const userRoutes = require("./routes/userRoute");
 const adminRoutes = require("./routes/adminRoute");
 const reviewRoute = require("./routes/reviewRoute");
 
-
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: false,
-  })
-);
 app.use(
   express.urlencoded({
     extended: false,
@@ -43,7 +35,6 @@ app.all("*", (req, res) => {
     message: "You Have Trying Reaching A Route That Doesn't Exist",
   });
 });
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

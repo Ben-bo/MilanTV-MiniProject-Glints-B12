@@ -8,7 +8,7 @@ reviewService.create = async (payload) => {
     const dataReview = {
       review: payload.review,
       rating: payload.rating,
-      user_id: payload.decodedToken.id,
+      user_id: payload.userId,
       movie_id: payload.idMovie,
     };
     const cekReview = await reviewsModel.findOne({
