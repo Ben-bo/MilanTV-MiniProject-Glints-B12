@@ -38,12 +38,13 @@ exports.userAuthorization = async (req, res, next) => {
 exports.adminAuthorization = async (req, res, next) => {
   try {
     const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.replace("Bearer", "");
 
-    if (token === null)
+    if (authHeader === null || typeof authHeader === "undefined")
       return res
         .status(401)
         .json({ statusText: "Unauthorized", message: "Token Is Null" });
+
+    const token = authHeader && authHeader.replace("Bearer", "");
 
     await jwt.verify(token, process.env.SECRET_KEY, async (err, data) => {
       if (err)
