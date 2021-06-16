@@ -11,9 +11,44 @@ const {
 const movie_directors = require('../database/models/movie_directors')
 
 const movieService = {
-    getAll: async () => {
-        const res = await Movies.findAll()
-        return res
+    getAll: async (page, size, genreId) => {
+        if (genreId == 'all') {
+            var res = await Movie_genres.findAndCountAll({
+                limit: size,
+                offset: (page - 1) * size,
+                include: [{
+                        model: Genres
+                    },
+                    {
+                        model: Movies,
+                        attributes: ['id', 'title', 'poster_path']
+                    }
+                ]
+            })
+        } else {
+            var res = await Movie_genres.findAndCountAll({
+                where: {
+                    genre_id: genreId
+                },
+                limit: size,
+                offset: (page - 1) * size,
+                include: [{
+                        model: Genres
+                    },
+                    {
+                        model: Movies,
+                        attributes: ['id', 'title', 'poster_path']
+                    }
+                ]
+            })
+        }
+        const respon = {
+            totalItems: res.count,
+            ...res,
+            totalPages: Math.round(res.count / size),
+            currentPage: page
+        }
+        return respon
     },
     show: async (id) => {
         const res = await Movies.findAll({
@@ -22,7 +57,7 @@ const movieService = {
             },
             include: [{
                     model: Movie_genres,
-                    attributes: ['id' ],
+                    attributes: ['id'],
                     include: {
                         model: Genres,
                         attributes: ['name']
@@ -133,7 +168,7 @@ const movieService = {
             }
         })
         const resGenreMovieData = await Movie_genres.bulkCreate(genreMovie)
-        
+
         const delDirectorMovieData = await Movie_directors.destroy({
             where: {
                 movie_id: id

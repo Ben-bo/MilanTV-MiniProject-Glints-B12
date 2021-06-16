@@ -2,8 +2,11 @@ const movieService = require('../services/movieService')
 
 const movieController = {
     getMovie: async (req, res) => {
+        const page = Number.parseInt(req.query.page)
+        const size = Number.parseInt(req.query.size)
+        const genreId = req.query.genre
         try {
-            const result = await movieService.getAll()
+            const result = await movieService.getAll(page, size, genreId)
             // console.log(result)
             res.send({
                 status: 200,
@@ -39,7 +42,7 @@ const movieController = {
     getAllMovieReview: async (req, res) => {
         const page = Number.parseInt(req.query.page)
         const size = Number.parseInt(req.query.size)
-        
+
         try {
             const result = await movieService.getAllReview(req.params.id, page, size)
             res.send({
