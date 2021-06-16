@@ -32,9 +32,8 @@ reviewMiddleware.validation = async (req, res, next) => {
       });
     }
 
-    const decodedToken = await jwt.verify(token, "secret_key");
     const idMovie = req.params.movie_id;
-    req.body.decodedToken = decodedToken;
+    req.body.userId = req.user.id;
     req.body.idMovie = idMovie;
 
     next();
