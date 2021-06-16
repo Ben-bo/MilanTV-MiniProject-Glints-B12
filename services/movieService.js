@@ -2,10 +2,13 @@ const {
     Movies,
     Movie_genres,
     Movie_actors,
+    Movie_directors,
     Genres,
     Reviews,
-    Users
+    Users,
+    sequelize
 } = require('../database/models')
+const movie_directors = require('../database/models/movie_directors')
 
 const movieService = {
     getAll: async () => {
@@ -19,7 +22,7 @@ const movieService = {
             },
             include: [{
                     model: Movie_genres,
-                    attributes: ['id'],
+                    attributes: ['id' ],
                     include: {
                         model: Genres,
                         attributes: ['name']
@@ -27,10 +30,37 @@ const movieService = {
                 },
                 {
                     model: Movie_actors
+                },
+                {
+                    model: Movie_directors
                 }
             ]
         })
-        return res
+        const avgRating = await Reviews.findAll({
+            where: {
+                movie_id: id
+            },
+            attributes: [
+                'movie_id',
+                [sequelize.fn('AVG', sequelize.col('rating')), 'avg_rating'],
+            ],
+            raw: true,
+            group: ['movie_id']
+        })
+        let respon = res[0]
+        respon.dataValues["avg_rating"] = avgRating[0]
+        return respon
+    },
+    avgReviewRating: async (id) => {
+        const avgRating = await Reviews.findAll({
+            attributes: [
+                'movie_id',
+                [sequelize.fn('AVG', sequelize.col('rating')), 'avg_rating'],
+            ],
+            raw: true,
+            group: ['movie_id']
+        })
+        return avgRating[0]
     },
     getAllReview: async (id, page, size) => {
         const res = await Reviews.findAndCountAll({
@@ -39,9 +69,9 @@ const movieService = {
             where: {
                 movie_id: id
             },
-            include:[{
+            include: [{
                 model: Users,
-                attributes:['full_name', 'photo_path']
+                attributes: ['full_name', 'photo_path']
             }]
         })
         const respon = {
@@ -54,7 +84,9 @@ const movieService = {
     },
     create: async (movieData) => {
         let genreMovie = JSON.parse(movieData.genre)
+        let directorMovie = JSON.parse(movieData.director)
         delete movieData.genre
+        delete movieData.director
         const resMovie = await Movies.create(movieData)
         genreMovie = genreMovie.map(el => {
             return {
@@ -62,12 +94,22 @@ const movieService = {
                 genre_id: el
             }
         });
+        directorMovie = directorMovie.map(el => {
+            return {
+                movie_id: resMovie.id,
+                director_name: el
+            }
+        });
+
         const resGenreMovieData = await Movie_genres.bulkCreate(genreMovie)
+        const resDirectorMovieData = await Movie_directors.bulkCreate(directorMovie)
         return resMovie.id
     },
     update: async (movieData, id) => {
         let genreMovie = JSON.parse(movieData.genre)
+        let directorMovie = JSON.parse(movieData.director)
         delete movieData.genre
+        delete movieData.director
         const resMovie = await Movies.update(movieData, {
             where: {
                 id
@@ -79,12 +121,26 @@ const movieService = {
                 genre_id: el
             }
         });
+        directorMovie = directorMovie.map(el => {
+            return {
+                movie_id: id,
+                director_name: el
+            }
+        });
         const delGenreMovieData = await Movie_genres.destroy({
             where: {
                 movie_id: id
             }
         })
         const resGenreMovieData = await Movie_genres.bulkCreate(genreMovie)
+        
+        const delDirectorMovieData = await Movie_directors.destroy({
+            where: {
+                movie_id: id
+            }
+        })
+        const resDirectorMovieData = await Movie_directors.bulkCreate(directorMovie)
+
         return resMovie.id
     },
     delete: async (id) => {
