@@ -7,7 +7,6 @@ const app = express()
 
 const movieRoute = require('./routes/movieRoute')
 
-
 app.use(cors())
 app.use(logger('dev'))
 app.use(bodyParser.json())

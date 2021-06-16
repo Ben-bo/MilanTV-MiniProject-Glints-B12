@@ -1,28 +1,9 @@
-const movieService = require('../services/movieService')
+const genreService = require('../services/genreService')
 
-const movieController = {
-    getMovie: async (req, res) => {
+const genreController = {
+    getAllGenre: async (req, res) => {
         try {
-            const result = await movieService.getAll()
-            // console.log(result)
-            res.send({
-                status: 200,
-                message: 'success',
-                data: result
-            })
-        } catch (err) {
-            console.log(err)
-            res.send({
-                status: 500,
-                message: err,
-                data: []
-            })
-        }
-    },
-    createMovie: async (req, res) => {
-        const movieData = req.body
-        try {
-            const result = await movieService.create(movieData)
+            const result = await genreService.getAll()
             res.send({
                 status: 200,
                 message: 'success',
@@ -36,11 +17,28 @@ const movieController = {
             })
         }
     },
-    updateMovie: async (req, res) => {
-        const movieData = req.body
+    createGenre: async (req, res) => {
+        const genreData = req.body.name
+        try {
+            const result = await genreService.create(genreData)
+            res.send({
+                status: 200,
+                message: 'success',
+                data: result
+            })
+        } catch (err) {
+            res.send({
+                status: 500,
+                message: err,
+                data: []
+            })
+        }
+    },
+    updateGenre: async (req, res) => {
+        const genreData = req.body.name
         const id = req.params.id
         try {
-            const result = await movieService.update(movieData, id)
+            const result = await genreService.update(genreData, id)
             res.send({
                 status: 200,
                 message: 'success',
@@ -54,10 +52,10 @@ const movieController = {
             })
         }
     },
-    deleteMovie: async (req, res) => {
+    deleteGenre: async (req, res) => {
         const id = req.params.id
         try {
-            const result = await movieService.delete(id)
+            const result = await genreService.delete(id)
             res.send({
                 status: 200,
                 message: 'success',
@@ -73,5 +71,4 @@ const movieController = {
     }
 }
 
-
-module.exports = movieController
+module.exports = genreController
