@@ -172,6 +172,7 @@ exports.addAndUpdateMoview = async (req, res, next) => {
       poster_path: Joi.string().required(),
       trailer_path: Joi.string().required(),
       genre: Joi.string().required(),
+      director: Joi.string().required(),
     }).options({ abortEarly: false });
 
     const validateAddAndUpdateMovieRequest =
