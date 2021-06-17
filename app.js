@@ -11,7 +11,9 @@ const userRoutes = require("./routes/userRoute");
 const adminRoutes = require("./routes/adminRoute");
 const reviewRoute = require("./routes/reviewRoute");
 
-app.use(cors());
+app.use(cors({
+  origin: "*",
+}));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(
