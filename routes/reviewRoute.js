@@ -9,5 +9,11 @@ router.post(
   validateRequest.addReview,
   reviewController.create
 );
+router.put(
+  "/update/:idReview",
+  authorizationMiddleware.userAuthorization,
+  validateRequest.addReview,
+  reviewController.update
+);
 
 module.exports = router;
