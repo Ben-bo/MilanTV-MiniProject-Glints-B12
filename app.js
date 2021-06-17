@@ -32,7 +32,7 @@ app.use("/api/milantv/admin", adminRoutes);
 app.get("/api/milantv", (req, res) => {
   res.send({
     status:200,
-    message: "welcome"
+    message: "welcome bro"
   })
 });
 // app.get("/tesconnect", (req, res) =>
