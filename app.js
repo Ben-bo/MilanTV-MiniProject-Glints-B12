@@ -20,6 +20,14 @@ app.use(
   })
 );
 
+
+app.get("/", (req, res) => {
+  res.send({
+    status:200,
+    message: "welcome"
+  })
+});
+
 app.use("/api/milantv/movies", movieRoute);
 app.use("/api/milantv/genres", genreRoute);
 app.use("/api/milantv/review", reviewRoute);
