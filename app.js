@@ -21,6 +21,13 @@ app.use(
 );
 
 
+// app.get("/api/milantv", (req, res) => {
+//   res.send({
+//     status:200,
+//     message: "welcome bro"
+//   })
+// });
+
 
 app.use("/api/milantv/movies", movieRoute);
 app.use("/api/milantv/genres", genreRoute);
@@ -29,12 +36,7 @@ app.use("/api/milantv", authenticationRoutes);
 app.use("/api/milantv/user", userRoutes);
 app.use("/api/milantv/admin", adminRoutes);
 
-app.get("/api/milantv", (req, res) => {
-  res.send({
-    status:200,
-    message: "welcome bro"
-  })
-});
+
 // app.get("/tesconnect", (req, res) =>
 //   res.status(200).send({
 //     message: "backend team f connected with u",
