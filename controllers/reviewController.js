@@ -1,13 +1,15 @@
-const Models = require("../database/models");
-const reviews = require("../database/models/reviews");
+const reviewService = require("../services/reviewService");
+const Op = require("sequelize").Op;
+const { Reviews: reviewsModel } = require("../database/models");
+const reviewController = {};
 
 // Show Review
-exports.getReview = async (req, res) => {
+reviewController.get = async (req, res) => {
   try {
-    const reviews = await Models.Reviews.findAll({
+    const reviews = await reviewsModel.findAll({
       limit: req.query.limit,
       offset: req.query.offset,
-      where: { movie_id: req.params.id },
+      where: { movie_id: req.params.movie_id },
     });
     console.log(reviews);
     res.status(200).json({
@@ -26,22 +28,27 @@ exports.getReview = async (req, res) => {
 };
 
 // Delete Review
-exports.deleteReview = async (req, res) => {
+reviewController.delete = async (req, res) => {
   try {
-    const checkReview = await Models.Reviews.findOne({
-      where: { movie_id: req.params.id },
+    const checkReview = await reviewsModel.findOne({
+      where: {
+        [Op.and]: [{ user_id: req.user.id }, { movie_id: req.params.movie_id }],
+      },
     });
+    console.log(checkReview);
     if (checkReview) {
-      console.log(checkReview);
-      await Models.Reviews.destroy({
-        where: { movie_id: req.params.id },
+      await reviewsModel.destroy({
+        where: {
+          [Op.and]: [
+            { user_id: req.user.id },
+            { movie_id: req.params.movie_id },
+          ],
+        },
       });
       res.status(200).json({
         statustext: "Deleted",
         message: "Movie Review Was Deleted",
-        data: {
-          ...reviews,
-        },
+        data: {},
       });
     }
   } catch (error) {
@@ -51,3 +58,46 @@ exports.deleteReview = async (req, res) => {
     });
   }
 };
+
+reviewController.create = async (req, res) => {
+  try {
+    let status = 200;
+    let message = "SUCCESS";
+    let data = {};
+
+    const { data: createReview, error } = await reviewsModel.create(req.body);
+    if (error !== null) {
+      (status = 500), (message = error);
+    }
+    res.status(status).send({
+      status,
+      message,
+      data: createReview || data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: 500, message: "failed", data: error });
+  }
+};
+
+reviewController.update = async (req, res) => {
+  try {
+    let status = 200;
+    let message = "SUCCESS";
+    let data = {};
+
+    const { data: updateReview, error } = await reviewsModel.update(req.body);
+    if (error !== null) {
+      (status = 500), (message = error);
+    }
+    res.status(status).send({
+      status,
+      message,
+      data: updateReview || data,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: 500, message: "failed", data: error });
+  }
+};
+module.exports = reviewController;
