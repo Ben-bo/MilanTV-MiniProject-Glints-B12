@@ -3,12 +3,18 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Movies extends Model {
     static associate(models) {
-      this.hasOne(models.Movie_directors, {
-        foreignKey: "id",
+      this.hasMany(models.Movie_directors, {
+        foreignKey: "movie_id",
       });
 
       this.hasMany(models.Movie_genres, {
-        foreignKey: "id",
+        foreignKey: "movie_id",
+      });
+      this.hasMany(models.Movie_actors, {
+        foreignKey: "movie_id",
+      });
+      this.hasMany(models.Reviews, {
+        foreignKey: "movie_id",
       });
 
       this.hasMany(models.Watchlists, {

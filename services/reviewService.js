@@ -8,9 +8,10 @@ reviewService.create = async (payload) => {
     const dataReview = {
       review: payload.review,
       rating: payload.rating,
-      user_id: payload.decodedToken.id,
+      user_id: payload.userId,
       movie_id: payload.idMovie,
     };
+
     const cekReview = await reviewsModel.findOne({
       where: {
         [Op.and]: [
@@ -41,7 +42,7 @@ reviewService.update = async (payload) => {
     const dataReview = {
       review: payload.review,
       rating: payload.rating,
-      user_id: payload.decodedToken.id,
+      user_id: payload.userId,
       movie_id: payload.movie_id,
     };
     const cekReview = await reviewsModel.findOne({
@@ -64,6 +65,9 @@ reviewService.update = async (payload) => {
       data: result,
       error,
     };
-  } catch (error) {}
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };
 module.exports = reviewService;

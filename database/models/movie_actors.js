@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsTo(models.Movies, {
         foreignKey: "movie_id",
-        targetKey: "id",
       });
     }
   }

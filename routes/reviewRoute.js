@@ -1,11 +1,18 @@
 const router = require("express").Router();
-const reviewMiddleware = require("../middlewares/reviewMiddleware");
+const validateRequest = require("../middlewares/validateRequestMiddleware");
 const reviewController = require("../controllers/reviewController");
+const authorizationMiddleware = require("../middlewares/authorizationMiddleware");
 
-router.post("/:movie_id", reviewMiddleware.validation, reviewController.create);
+router.post(
+  "/:movie_id",
+  authorizationMiddleware.userAuthorization,
+  validateRequest.addReview,
+  reviewController.create
+);
 router.put(
-  "/update/:review_id",
-  reviewMiddleware.validation,
+  "/update/:idReview",
+  authorizationMiddleware.userAuthorization,
+  validateRequest.addReview,
   reviewController.update
 );
 
