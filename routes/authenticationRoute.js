@@ -11,7 +11,7 @@ route.post(
   authenticationController.getToken
 );
 
-route.get(
+route.post(
   "/auth/login",
   validateRequest.login,
   authenticationMiddleware.login,
