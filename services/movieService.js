@@ -23,8 +23,7 @@ const movieService = {
             model: Genres,
           },
           {
-            model: Movies,
-            attributes: ["id", "title", "poster_path"],
+            model: Movies
           },
         ],
       });
