@@ -4,8 +4,8 @@ const cors = require("cors");
 const logger = require("morgan");
 const app = express();
 
-const movieRoute = require('./routes/movieRoute');
-const genreRoute = require('./routes/genreRoute');
+const movieRoute = require("./routes/movieRoute");
+const genreRoute = require("./routes/genreRoute");
 const authenticationRoutes = require("./routes/authenticationRoute");
 const userRoutes = require("./routes/userRoute");
 const adminRoutes = require("./routes/adminRoute");
