@@ -64,8 +64,8 @@ reviewController.create = async (req, res) => {
     let status = 200;
     let message = "SUCCESS";
     let data = {};
-
-    const { data: createReview, error } = await reviewsModel.create(req.body);
+    console.log(req.body);
+    const { data: createReview, error } = await reviewService.create(req.body);
     if (error !== null) {
       (status = 500), (message = error);
     }
@@ -86,7 +86,7 @@ reviewController.update = async (req, res) => {
     let message = "SUCCESS";
     let data = {};
 
-    const { data: updateReview, error } = await reviewsModel.update(req.body);
+    const { data: updateReview, error } = await reviewService.update(req.body);
     if (error !== null) {
       (status = 500), (message = error);
     }
