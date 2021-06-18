@@ -146,9 +146,6 @@ exports.addReview = async (req, res, next) => {
 
     const idMovie = req.params.movie_id;
     const idReview = req.params.idReview;
-    console.log(idReview);
-    console.log(idMovie);
-    console.log(req.user.id);
 
     if (idMovie) {
       req.body.idMovie = idMovie;
